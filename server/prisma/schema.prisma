@@ -1,0 +1,133 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum ChatType {
+  MEETING
+  GROUP
+}
+
+enum FriendshipStatus {
+  PENDING
+  ACCEPTED
+}
+
+model User {
+  id           String   @id @default(uuid())
+  firstName    String
+  lastName     String
+  email        String   @unique
+  passwordHash String
+  avatarUrl    String?
+  bio          String?
+  city         String?
+  interests    String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt @default(now())
+
+  createdMeetings      Meeting[]            @relation("MeetingCreator")
+  meetingParticipants MeetingParticipant[]
+  createdChats        Chat[]               @relation("ChatCreator")
+  chatParticipants    ChatParticipant[]
+  messages            Message[]
+  sentFriendships     Friendship[]         @relation("FriendshipRequester")
+  receivedFriendships Friendship[]         @relation("FriendshipAddressee")
+}
+
+model Meeting {
+  id                String   @id @default(uuid())
+  title             String
+  description       String
+  category          String
+  address           String
+  dateTime          DateTime
+  participantsLimit Int
+  creatorId         String
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt @default(now())
+
+  creator      User                 @relation("MeetingCreator", fields: [creatorId], references: [id], onDelete: Cascade)
+  participants MeetingParticipant[]
+  chat         Chat?
+
+  @@index([dateTime])
+  @@index([category])
+  @@index([creatorId])
+}
+
+model MeetingParticipant {
+  id        String   @id @default(uuid())
+  meetingId String
+  userId    String
+  joinedAt  DateTime @default(now())
+
+  meeting Meeting @relation(fields: [meetingId], references: [id], onDelete: Cascade)
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([meetingId, userId])
+  @@index([userId])
+}
+
+model Chat {
+  id          String   @id @default(uuid())
+  title       String
+  type        ChatType @default(GROUP)
+  meetingId   String?  @unique
+  createdById String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt @default(now())
+
+  meeting      Meeting?          @relation(fields: [meetingId], references: [id], onDelete: Cascade)
+  createdBy    User?             @relation("ChatCreator", fields: [createdById], references: [id], onDelete: SetNull)
+  participants ChatParticipant[]
+  messages     Message[]
+
+  @@index([type])
+  @@index([createdById])
+}
+
+model ChatParticipant {
+  id       String   @id @default(uuid())
+  chatId   String
+  userId   String
+  joinedAt DateTime @default(now())
+
+  chat Chat @relation(fields: [chatId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([chatId, userId])
+  @@index([userId])
+}
+
+model Message {
+  id        String   @id @default(uuid())
+  chatId    String
+  senderId  String
+  text      String
+  createdAt DateTime @default(now())
+
+  chat   Chat @relation(fields: [chatId], references: [id], onDelete: Cascade)
+  sender User @relation(fields: [senderId], references: [id], onDelete: Cascade)
+
+  @@index([chatId, createdAt])
+  @@index([senderId])
+}
+
+model Friendship {
+  id          String           @id @default(uuid())
+  requesterId String
+  addresseeId String
+  status      FriendshipStatus @default(PENDING)
+  createdAt   DateTime         @default(now())
+
+  requester User @relation("FriendshipRequester", fields: [requesterId], references: [id], onDelete: Cascade)
+  addressee User @relation("FriendshipAddressee", fields: [addresseeId], references: [id], onDelete: Cascade)
+
+  @@unique([requesterId, addresseeId])
+  @@index([addresseeId])
+}

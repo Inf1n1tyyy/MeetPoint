@@ -1,0 +1,70 @@
+@use "./variables.scss";
+
+html {
+  min-width: 320px;
+  scroll-behavior: smooth;
+}
+
+#root {
+  width: 100%;
+  min-height: 100vh;
+}
+
+body {
+  min-width: 320px;
+  min-height: 100vh;
+  font-family: "Manrope", Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  color: var(--color-text);
+  background: var(--gradient-soft);
+  text-rendering: geometricPrecision;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 9% 14%, rgba(1, 14, 107, 0.08), transparent 28%),
+    radial-gradient(circle at 90% 7%, rgba(212, 129, 210, 0.2), transparent 28%),
+    radial-gradient(circle at 74% 85%, rgba(190, 116, 190, 0.14), transparent 32%);
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+button,
+input,
+textarea,
+select {
+  font-family: inherit;
+}
+
+input,
+textarea,
+select {
+  color: var(--color-text);
+}
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: 3px solid rgba(212, 129, 210, 0.5);
+  outline-offset: 3px;
+}
+
+::selection {
+  color: #ffffff;
+  background: var(--color-purple);
+}
+
+@media (max-width: 640px) {
+  body {
+    background: #fbf7ff;
+  }
+}

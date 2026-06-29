@@ -1,0 +1,36 @@
+:root {
+  --color-navy: #010e6b;
+  --color-purple: #703b94;
+  --color-pink: #be74be;
+  --color-rose: #d481d2;
+
+  --color-primary: var(--color-purple);
+  --color-primary-hover: var(--color-navy);
+  --color-accent: var(--color-pink);
+  --color-accent-soft: rgba(212, 129, 210, 0.16);
+
+  --color-text: #17142a;
+  --color-text-secondary: #68607a;
+  --color-background: #fbf7ff;
+  --color-surface: rgba(255, 255, 255, 0.86);
+  --color-surface-solid: #ffffff;
+  --color-border: rgba(112, 59, 148, 0.16);
+  --color-border-strong: rgba(112, 59, 148, 0.28);
+
+  --gradient-primary: linear-gradient(135deg, #010e6b 0%, #703b94 52%, #be74be 100%);
+  --gradient-soft: radial-gradient(circle at top left, rgba(212, 129, 210, 0.34), transparent 32%),
+    radial-gradient(circle at 82% 18%, rgba(190, 116, 190, 0.26), transparent 30%),
+    linear-gradient(180deg, #ffffff 0%, #fbf7ff 100%);
+  --gradient-card: linear-gradient(145deg, rgba(255, 255, 255, 0.94), rgba(251, 247, 255, 0.86));
+
+  --container-width: 1200px;
+
+  --radius-sm: 10px;
+  --radius-md: 14px;
+  --radius-lg: 22px;
+  --radius-xl: 30px;
+
+  --shadow-sm: 0 10px 26px rgba(1, 14, 107, 0.07);
+  --shadow: 0 18px 55px rgba(1, 14, 107, 0.12);
+  --shadow-strong: 0 30px 90px rgba(1, 14, 107, 0.22);
+}
