@@ -11,6 +11,7 @@
 - Express
 - PostgreSQL
 - Prisma ORM
+- Docker
 - JWT
 - WebSocket
 
